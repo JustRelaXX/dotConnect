@@ -4,9 +4,15 @@ import { useVoiceStore } from '../../stores/voiceStore';
 import { useWebSocket } from '../../hooks/useWebSocket';
 
 export default function VoiceControls() {
-  const { 
-    activeVoiceChannel, isMuted, isDeafened, setIsMuted, setIsDeafened, setActiveVoiceChannel,
-    localScreenStream, setLocalScreenStream 
+  const {
+    activeVoiceChannel,
+    isMuted,
+    isDeafened,
+    setIsMuted,
+    setIsDeafened,
+    setActiveVoiceChannel,
+    localScreenStream,
+    setLocalScreenStream,
   } = useVoiceStore();
   const { sendJson } = useWebSocket();
 
@@ -33,7 +39,7 @@ export default function VoiceControls() {
   const toggleScreenShare = async () => {
     if (localScreenStream) {
       // Останавливаем стрим
-      localScreenStream.getTracks().forEach(track => track.stop());
+      localScreenStream.getTracks().forEach((track) => track.stop());
       setLocalScreenStream(null);
       sendJson('stop_screen_share', {});
     } else {
@@ -55,7 +61,7 @@ export default function VoiceControls() {
 
   const leaveVoice = () => {
     if (localScreenStream) {
-      localScreenStream.getTracks().forEach(track => track.stop());
+      localScreenStream.getTracks().forEach((track) => track.stop());
       setLocalScreenStream(null);
       sendJson('stop_screen_share', {});
     }
@@ -70,33 +76,29 @@ export default function VoiceControls() {
         <div className="voice-status-channel">General Voice</div>
       </div>
       <div className="voice-actions">
-        <button 
-          className={`icon-btn ${isMuted ? 'danger' : ''}`} 
+        <button
+          className={`icon-btn ${isMuted ? 'danger' : ''}`}
           onClick={toggleMute}
-          title={isMuted ? "Включить микрофон" : "Выключить микрофон"}
+          title={isMuted ? 'Включить микрофон' : 'Выключить микрофон'}
         >
           {isMuted ? '🔇' : '🎙️'}
         </button>
-        <button 
-          className={`icon-btn ${isDeafened ? 'danger' : ''}`} 
+        <button
+          className={`icon-btn ${isDeafened ? 'danger' : ''}`}
           onClick={toggleDeafen}
-          title={isDeafened ? "Включить звук" : "Отключить звук"}
+          title={isDeafened ? 'Включить звук' : 'Отключить звук'}
         >
           {isDeafened ? '🎧❌' : '🎧'}
         </button>
-        <button 
-          className={`icon-btn ${localScreenStream ? 'active-share' : ''}`} 
+        <button
+          className={`icon-btn ${localScreenStream ? 'active-share' : ''}`}
           onClick={toggleScreenShare}
-          title={localScreenStream ? "Остановить стрим" : "Стрим экрана"}
+          title={localScreenStream ? 'Остановить стрим' : 'Стрим экрана'}
           style={localScreenStream ? { color: 'var(--success)' } : {}}
         >
           📺
         </button>
-        <button 
-          className="icon-btn danger" 
-          onClick={leaveVoice}
-          title="Отключиться"
-        >
+        <button className="icon-btn danger" onClick={leaveVoice} title="Отключиться">
           ✖
         </button>
       </div>

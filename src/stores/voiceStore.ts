@@ -59,73 +59,82 @@ export const useVoiceStore = create<VoiceState>((set, get) => ({
     // Останавливаем старый стрим при замене
     const oldStream = get().localStream;
     if (oldStream && oldStream !== stream) {
-      oldStream.getTracks().forEach(track => track.stop());
+      oldStream.getTracks().forEach((track) => track.stop());
     }
     set({ localStream: stream });
   },
 
   peers: {},
   addPeer: (userId, peer) => set((state) => ({ peers: { ...state.peers, [userId]: peer } })),
-  removePeer: (userId) => set((state) => {
-    const newPeers = { ...state.peers };
-    if (newPeers[userId]) {
-      newPeers[userId].close();
-      delete newPeers[userId];
-    }
-    return { peers: newPeers };
-  }),
-  clearPeers: () => set((state) => {
-    Object.values(state.peers).forEach(peer => peer.close());
-    return { peers: {} };
-  }),
+  removePeer: (userId) =>
+    set((state) => {
+      const newPeers = { ...state.peers };
+      if (newPeers[userId]) {
+        newPeers[userId].close();
+        delete newPeers[userId];
+      }
+      return { peers: newPeers };
+    }),
+  clearPeers: () =>
+    set((state) => {
+      Object.values(state.peers).forEach((peer) => peer.close());
+      return { peers: {} };
+    }),
 
   remoteStreams: {},
-  addRemoteStream: (userId, stream) => set((state) => ({ remoteStreams: { ...state.remoteStreams, [userId]: stream } })),
-  removeRemoteStream: (userId) => set((state) => {
-    const newStreams = { ...state.remoteStreams };
-    delete newStreams[userId];
-    return { remoteStreams: newStreams };
-  }),
+  addRemoteStream: (userId, stream) =>
+    set((state) => ({ remoteStreams: { ...state.remoteStreams, [userId]: stream } })),
+  removeRemoteStream: (userId) =>
+    set((state) => {
+      const newStreams = { ...state.remoteStreams };
+      delete newStreams[userId];
+      return { remoteStreams: newStreams };
+    }),
   clearRemoteStreams: () => set({ remoteStreams: {} }),
 
   localScreenStream: null,
   setLocalScreenStream: (stream) => {
     const oldStream = get().localScreenStream;
     if (oldStream && oldStream !== stream) {
-      oldStream.getTracks().forEach(track => track.stop());
+      oldStream.getTracks().forEach((track) => track.stop());
     }
     set({ localScreenStream: stream });
   },
 
   screenPeers: {},
-  addScreenPeer: (userId, peer) => set((state) => ({ screenPeers: { ...state.screenPeers, [userId]: peer } })),
-  removeScreenPeer: (userId) => set((state) => {
-    const newPeers = { ...state.screenPeers };
-    if (newPeers[userId]) {
-      newPeers[userId].close();
-      delete newPeers[userId];
-    }
-    return { screenPeers: newPeers };
-  }),
-  clearScreenPeers: () => set((state) => {
-    Object.values(state.screenPeers).forEach(peer => peer.close());
-    return { screenPeers: {} };
-  }),
+  addScreenPeer: (userId, peer) =>
+    set((state) => ({ screenPeers: { ...state.screenPeers, [userId]: peer } })),
+  removeScreenPeer: (userId) =>
+    set((state) => {
+      const newPeers = { ...state.screenPeers };
+      if (newPeers[userId]) {
+        newPeers[userId].close();
+        delete newPeers[userId];
+      }
+      return { screenPeers: newPeers };
+    }),
+  clearScreenPeers: () =>
+    set((state) => {
+      Object.values(state.screenPeers).forEach((peer) => peer.close());
+      return { screenPeers: {} };
+    }),
 
   remoteScreenStreams: {},
-  addRemoteScreenStream: (userId, stream) => set((state) => ({ remoteScreenStreams: { ...state.remoteScreenStreams, [userId]: stream } })),
-  removeRemoteScreenStream: (userId) => set((state) => {
-    const newStreams = { ...state.remoteScreenStreams };
-    delete newStreams[userId];
-    return { remoteScreenStreams: newStreams };
-  }),
+  addRemoteScreenStream: (userId, stream) =>
+    set((state) => ({ remoteScreenStreams: { ...state.remoteScreenStreams, [userId]: stream } })),
+  removeRemoteScreenStream: (userId) =>
+    set((state) => {
+      const newStreams = { ...state.remoteScreenStreams };
+      delete newStreams[userId];
+      return { remoteScreenStreams: newStreams };
+    }),
   clearRemoteScreenStreams: () => set({ remoteScreenStreams: {} }),
 
   isMuted: false,
   setIsMuted: (muted) => {
     const { localStream } = get();
     if (localStream) {
-      localStream.getAudioTracks().forEach(track => {
+      localStream.getAudioTracks().forEach((track) => {
         track.enabled = !muted; // Включаем/выключаем трек
       });
     }
@@ -136,16 +145,21 @@ export const useVoiceStore = create<VoiceState>((set, get) => ({
   setIsDeafened: (deafened) => set({ isDeafened: deafened }),
 
   voiceUsers: {},
-  updateVoiceUser: (userId, data) => set((state) => ({
-    voiceUsers: {
-      ...state.voiceUsers,
-      [userId]: { ...(state.voiceUsers[userId] || { id: userId, isMuted: false, isDeafened: false }), ...data }
-    }
-  })),
-  removeVoiceUser: (userId) => set((state) => {
-    const newUsers = { ...state.voiceUsers };
-    delete newUsers[userId];
-    return { voiceUsers: newUsers };
-  }),
+  updateVoiceUser: (userId, data) =>
+    set((state) => ({
+      voiceUsers: {
+        ...state.voiceUsers,
+        [userId]: {
+          ...(state.voiceUsers[userId] || { id: userId, isMuted: false, isDeafened: false }),
+          ...data,
+        },
+      },
+    })),
+  removeVoiceUser: (userId) =>
+    set((state) => {
+      const newUsers = { ...state.voiceUsers };
+      delete newUsers[userId];
+      return { voiceUsers: newUsers };
+    }),
   clearVoiceUsers: () => set({ voiceUsers: {} }),
 }));

@@ -8,7 +8,7 @@ export default function ScreenShareView() {
 
   const streams = [
     ...(localScreenStream ? [{ id: 'local', stream: localScreenStream, isLocal: true }] : []),
-    ...Object.entries(remoteScreenStreams).map(([id, stream]) => ({ id, stream, isLocal: false }))
+    ...Object.entries(remoteScreenStreams).map(([id, stream]) => ({ id, stream, isLocal: false })),
   ];
 
   if (streams.length === 0) return null;
@@ -18,9 +18,7 @@ export default function ScreenShareView() {
       {streams.map(({ id, stream, isLocal }) => (
         <div key={id} className="screen-share-container">
           <VideoPlayer stream={stream} muted={isLocal} />
-          <div className="screen-share-label">
-            {isLocal ? 'Ваш стрим' : `Стрим: ${id}`}
-          </div>
+          <div className="screen-share-label">{isLocal ? 'Ваш стрим' : `Стрим: ${id}`}</div>
         </div>
       ))}
     </div>

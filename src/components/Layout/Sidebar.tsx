@@ -42,10 +42,16 @@ export default function Sidebar() {
       </div>
 
       {serverIp && (
-        <div className="sidebar-connection-info" onClick={handleCopy} title="Нажми, чтобы скопировать">
+        <div
+          className="sidebar-connection-info"
+          onClick={handleCopy}
+          title="Нажми, чтобы скопировать"
+        >
           <div className="info-row">
             <span className="label">IP:</span>
-            <span className="value">{serverIp}:{serverPort}</span>
+            <span className="value">
+              {serverIp}:{serverPort}
+            </span>
           </div>
           <div className="copy-hint">{copied ? 'Скопировано!' : 'Копировать адрес'}</div>
         </div>
@@ -65,8 +71,10 @@ export default function Sidebar() {
           </div>
         ))}
 
-        <div className="channel-category" style={{ marginTop: '16px' }}>Голосовые каналы</div>
-        
+        <div className="channel-category" style={{ marginTop: '16px' }}>
+          Голосовые каналы
+        </div>
+
         {/* Hardcoded General Voice Channel for now */}
         <div
           className={`channel-item voice-channel ${activeVoiceChannel === 'general_voice' ? 'active' : ''}`}
@@ -84,7 +92,9 @@ export default function Sidebar() {
                 <div className="voice-user-avatar">
                   {/* We could lookup actual avatar color from userStore, using simple circle for now */}
                 </div>
-                <span className="voice-user-name">{u.id === useConnectionStore.getState().ws?.url ? 'Loading...' : u.id}</span>
+                <span className="voice-user-name">
+                  {u.id === useConnectionStore.getState().ws?.url ? 'Loading...' : u.id}
+                </span>
                 <div className="voice-user-status">
                   {u.isMuted && <span title="Микрофон выключен">🔇</span>}
                   {u.isDeafened && <span title="Звук отключен">🎧❌</span>}

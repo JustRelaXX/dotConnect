@@ -8,7 +8,8 @@ import { useWebSocket } from '../../hooks/useWebSocket';
 
 export default function HostScreen() {
   const { setScreen, username, displayName } = useUserStore();
-  const { setServerInfo, setRoomPassword, serverPort, setErrorMessage, errorMessage } = useConnectionStore();
+  const { setServerInfo, setRoomPassword, serverPort, setErrorMessage, errorMessage } =
+    useConnectionStore();
   const { connect } = useWebSocket();
 
   const [port, setPort] = useState(String(serverPort || 9150));
@@ -72,19 +73,13 @@ export default function HostScreen() {
               />
             </div>
 
-            <button
-              className="btn btn-primary"
-              onClick={handleStart}
-              disabled={isStarting}
-            >
+            <button className="btn btn-primary" onClick={handleStart} disabled={isStarting}>
               {isStarting ? 'Запускаю...' : '🚀 Запустить сервер'}
             </button>
           </>
         ) : (
           <div className="server-info">
-            <p style={{ color: 'var(--success)', fontWeight: 600 }}>
-              ✅ Сервер запущен!
-            </p>
+            <p style={{ color: 'var(--success)', fontWeight: 600 }}>✅ Сервер запущен!</p>
             <div className="ip-display">{serverIp}</div>
             <p className="port-display">Порт: {port}</p>
             <p style={{ marginTop: 12, fontSize: 12, color: 'var(--text-muted)' }}>

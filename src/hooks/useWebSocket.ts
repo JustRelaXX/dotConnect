@@ -12,8 +12,17 @@ export function useWebSocket() {
   const typingTimers = useRef<Record<string, NodeJS.Timeout>>({});
 
   const { setWs, setStatus, setErrorMessage } = useConnectionStore();
-  const { setCurrentUser, setOnlineUsers, addOnlineUser, removeOnlineUser, setScreen } = useUserStore();
-  const { setChannels, setMessages, addMessage, addChannel, removeChannel, setTyping, clearTyping } = useChatStore();
+  const { setCurrentUser, setOnlineUsers, addOnlineUser, removeOnlineUser, setScreen } =
+    useUserStore();
+  const {
+    setChannels,
+    setMessages,
+    addMessage,
+    addChannel,
+    removeChannel,
+    setTyping,
+    clearTyping,
+  } = useChatStore();
 
   const connect = useCallback(
     (ip: string, port: number, username: string, displayName: string, roomPassword: string) => {
@@ -162,14 +171,24 @@ export function useWebSocket() {
             voiceStore.updateVoiceUser(sender_id, { isMuted: false, isDeafened: false });
 
             // Create peer connection
-            const pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
+            const pc = new RTCPeerConnection({
+              iceServers: [{ urls: 'stun:stun.l.google.com:19302' }],
+            });
             if (voiceStore.localStream) {
-              voiceStore.localStream.getTracks().forEach(track => pc.addTrack(track, voiceStore.localStream!));
+              voiceStore.localStream
+                .getTracks()
+                .forEach((track) => pc.addTrack(track, voiceStore.localStream!));
             }
 
             pc.onicecandidate = (event) => {
               if (event.candidate) {
-                ws.send(JSON.stringify({ type: 'webrtc_ice_candidate', payload: { target_id: sender_id, candidate: event.candidate }, timestamp: Date.now() }));
+                ws.send(
+                  JSON.stringify({
+                    type: 'webrtc_ice_candidate',
+                    payload: { target_id: sender_id, candidate: event.candidate },
+                    timestamp: Date.now(),
+                  })
+                );
               }
             };
 
@@ -180,11 +199,19 @@ export function useWebSocket() {
             voiceStore.addPeer(sender_id, pc);
 
             // Create offer
-            pc.createOffer().then(offer => {
-              return pc.setLocalDescription(offer);
-            }).then(() => {
-              ws.send(JSON.stringify({ type: 'webrtc_offer', payload: { target_id: sender_id, offer: pc.localDescription }, timestamp: Date.now() }));
-            });
+            pc.createOffer()
+              .then((offer) => {
+                return pc.setLocalDescription(offer);
+              })
+              .then(() => {
+                ws.send(
+                  JSON.stringify({
+                    type: 'webrtc_offer',
+                    payload: { target_id: sender_id, offer: pc.localDescription },
+                    timestamp: Date.now(),
+                  })
+                );
+              });
             break;
           }
 
@@ -204,15 +231,25 @@ export function useWebSocket() {
 
             console.log(`[WebRTC] Received offer from ${sender_id}`);
             const voiceStore = useVoiceStore.getState();
-            
-            const pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
+
+            const pc = new RTCPeerConnection({
+              iceServers: [{ urls: 'stun:stun.l.google.com:19302' }],
+            });
             if (voiceStore.localStream) {
-              voiceStore.localStream.getTracks().forEach(track => pc.addTrack(track, voiceStore.localStream!));
+              voiceStore.localStream
+                .getTracks()
+                .forEach((track) => pc.addTrack(track, voiceStore.localStream!));
             }
 
             pc.onicecandidate = (event) => {
               if (event.candidate) {
-                ws.send(JSON.stringify({ type: 'webrtc_ice_candidate', payload: { target_id: sender_id, candidate: event.candidate }, timestamp: Date.now() }));
+                ws.send(
+                  JSON.stringify({
+                    type: 'webrtc_ice_candidate',
+                    payload: { target_id: sender_id, candidate: event.candidate },
+                    timestamp: Date.now(),
+                  })
+                );
               }
             };
 
@@ -224,9 +261,15 @@ export function useWebSocket() {
 
             pc.setRemoteDescription(new RTCSessionDescription(offer))
               .then(() => pc.createAnswer())
-              .then(answer => pc.setLocalDescription(answer))
+              .then((answer) => pc.setLocalDescription(answer))
               .then(() => {
-                ws.send(JSON.stringify({ type: 'webrtc_answer', payload: { target_id: sender_id, answer: pc.localDescription }, timestamp: Date.now() }));
+                ws.send(
+                  JSON.stringify({
+                    type: 'webrtc_answer',
+                    payload: { target_id: sender_id, answer: pc.localDescription },
+                    timestamp: Date.now(),
+                  })
+                );
               });
             break;
           }
@@ -260,7 +303,9 @@ export function useWebSocket() {
 
           case 'voice_state_update': {
             const { sender_id, is_muted, is_deafened } = msg.payload;
-            useVoiceStore.getState().updateVoiceUser(sender_id, { isMuted: is_muted, isDeafened: is_deafened });
+            useVoiceStore
+              .getState()
+              .updateVoiceUser(sender_id, { isMuted: is_muted, isDeafened: is_deafened });
             break;
           }
 
@@ -275,13 +320,21 @@ export function useWebSocket() {
 
             console.log(`[WebRTC Screen] ${sender_id} started sharing screen, creating offer`);
 
-            const pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
+            const pc = new RTCPeerConnection({
+              iceServers: [{ urls: 'stun:stun.l.google.com:19302' }],
+            });
             // For screen share, we only SEND our screen stream if WE are sharing.
             // When someone else starts sharing, we just want to RECEIVE it. We don't add local tracks here.
-            
+
             pc.onicecandidate = (event) => {
               if (event.candidate) {
-                ws.send(JSON.stringify({ type: 'webrtc_screen_ice', payload: { target_id: sender_id, candidate: event.candidate }, timestamp: Date.now() }));
+                ws.send(
+                  JSON.stringify({
+                    type: 'webrtc_screen_ice',
+                    payload: { target_id: sender_id, candidate: event.candidate },
+                    timestamp: Date.now(),
+                  })
+                );
               }
             };
 
@@ -293,11 +346,19 @@ export function useWebSocket() {
 
             // Create offer (recvonly since we are just watching)
             pc.addTransceiver('video', { direction: 'recvonly' });
-            pc.createOffer().then(offer => {
-              return pc.setLocalDescription(offer);
-            }).then(() => {
-              ws.send(JSON.stringify({ type: 'webrtc_screen_offer', payload: { target_id: sender_id, offer: pc.localDescription }, timestamp: Date.now() }));
-            });
+            pc.createOffer()
+              .then((offer) => {
+                return pc.setLocalDescription(offer);
+              })
+              .then(() => {
+                ws.send(
+                  JSON.stringify({
+                    type: 'webrtc_screen_offer',
+                    payload: { target_id: sender_id, offer: pc.localDescription },
+                    timestamp: Date.now(),
+                  })
+                );
+              });
             break;
           }
 
@@ -316,17 +377,27 @@ export function useWebSocket() {
 
             console.log(`[WebRTC Screen] Received offer from ${sender_id}`);
             const voiceStore = useVoiceStore.getState();
-            
-            const pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
-            
+
+            const pc = new RTCPeerConnection({
+              iceServers: [{ urls: 'stun:stun.l.google.com:19302' }],
+            });
+
             // We only add our local screen stream to the PC when we RECEIVE an offer from a viewer
             if (voiceStore.localScreenStream) {
-              voiceStore.localScreenStream.getTracks().forEach(track => pc.addTrack(track, voiceStore.localScreenStream!));
+              voiceStore.localScreenStream
+                .getTracks()
+                .forEach((track) => pc.addTrack(track, voiceStore.localScreenStream!));
             }
 
             pc.onicecandidate = (event) => {
               if (event.candidate) {
-                ws.send(JSON.stringify({ type: 'webrtc_screen_ice', payload: { target_id: sender_id, candidate: event.candidate }, timestamp: Date.now() }));
+                ws.send(
+                  JSON.stringify({
+                    type: 'webrtc_screen_ice',
+                    payload: { target_id: sender_id, candidate: event.candidate },
+                    timestamp: Date.now(),
+                  })
+                );
               }
             };
 
@@ -338,9 +409,15 @@ export function useWebSocket() {
 
             pc.setRemoteDescription(new RTCSessionDescription(offer))
               .then(() => pc.createAnswer())
-              .then(answer => pc.setLocalDescription(answer))
+              .then((answer) => pc.setLocalDescription(answer))
               .then(() => {
-                ws.send(JSON.stringify({ type: 'webrtc_screen_answer', payload: { target_id: sender_id, answer: pc.localDescription }, timestamp: Date.now() }));
+                ws.send(
+                  JSON.stringify({
+                    type: 'webrtc_screen_answer',
+                    payload: { target_id: sender_id, answer: pc.localDescription },
+                    timestamp: Date.now(),
+                  })
+                );
               });
             break;
           }
@@ -377,7 +454,23 @@ export function useWebSocket() {
         }
       }
     },
-    [setWs, setStatus, setErrorMessage, setCurrentUser, setOnlineUsers, addOnlineUser, removeOnlineUser, setScreen, setChannels, setMessages, addMessage, addChannel, removeChannel, setTyping, clearTyping]
+    [
+      setWs,
+      setStatus,
+      setErrorMessage,
+      setCurrentUser,
+      setOnlineUsers,
+      addOnlineUser,
+      removeOnlineUser,
+      setScreen,
+      setChannels,
+      setMessages,
+      addMessage,
+      addChannel,
+      removeChannel,
+      setTyping,
+      clearTyping,
+    ]
   );
 
   const sendMessage = useCallback((channelId: string, content: string) => {
@@ -426,7 +519,7 @@ export function useWebSocket() {
       setWs(null);
     }
     setStatus('disconnected');
-    
+
     // Clear voice state on disconnect
     useVoiceStore.getState().clearPeers();
     useVoiceStore.getState().clearRemoteStreams();

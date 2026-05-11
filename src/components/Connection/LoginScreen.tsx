@@ -45,11 +45,7 @@ export default function LoginScreen() {
           />
         </div>
 
-        <button
-          type="submit"
-          className="btn btn-primary"
-          disabled={!name.trim() || !nick.trim()}
-        >
+        <button type="submit" className="btn btn-primary" disabled={!name.trim() || !nick.trim()}>
           Продолжить
         </button>
       </form>

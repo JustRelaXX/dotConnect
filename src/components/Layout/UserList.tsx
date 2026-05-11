@@ -7,16 +7,11 @@ export default function UserList() {
 
   return (
     <div className="user-list">
-      <div className="user-list-title">
-        В сети — {onlineUsers.length}
-      </div>
+      <div className="user-list-title">В сети — {onlineUsers.length}</div>
 
       {onlineUsers.map((user) => (
         <div key={user.id} className="user-item">
-          <div
-            className="user-avatar-small"
-            style={{ background: user.avatar_color }}
-          >
+          <div className="user-avatar-small" style={{ background: user.avatar_color }}>
             {user.display_name.charAt(0).toUpperCase()}
             <div className="status-dot" />
           </div>

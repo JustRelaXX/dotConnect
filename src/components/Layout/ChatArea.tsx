@@ -70,21 +70,14 @@ export default function ChatArea() {
                   background: msg.author_color || '#7C6AEF',
                 }}
               >
-                {(msg.author_name || msg.author_username || '?')
-                  .charAt(0)
-                  .toUpperCase()}
+                {(msg.author_name || msg.author_username || '?').charAt(0).toUpperCase()}
               </div>
               <div className="message-content">
                 <div className="message-header">
-                  <span
-                    className="message-author"
-                    style={{ color: msg.author_color || '#7C6AEF' }}
-                  >
+                  <span className="message-author" style={{ color: msg.author_color || '#7C6AEF' }}>
                     {msg.author_name || msg.author_username || 'Unknown'}
                   </span>
-                  <span className="message-time">
-                    {formatTime(msg.created_at)}
-                  </span>
+                  <span className="message-time">{formatTime(msg.created_at)}</span>
                 </div>
                 <div className="message-text">{msg.content}</div>
               </div>

@@ -68,21 +68,13 @@ export default function JoinScreen() {
           />
         </div>
 
-        <button
-          type="submit"
-          className="btn btn-primary"
-          disabled={isConnecting || !ip.trim()}
-        >
+        <button type="submit" className="btn btn-primary" disabled={isConnecting || !ip.trim()}>
           {isConnecting ? 'Подключение...' : '🔗 Подключиться'}
         </button>
 
         {errorMessage && <p className="error-text">{errorMessage}</p>}
 
-        <button
-          type="button"
-          className="back-link"
-          onClick={() => setScreen('choice')}
-        >
+        <button type="button" className="back-link" onClick={() => setScreen('choice')}>
           ← Назад
         </button>
       </form>

@@ -29,13 +29,11 @@ export const useChatStore = create<ChatState>((set) => ({
   activeChannelId: 'general',
   setChannels: (channels) => set({ channels }),
   setActiveChannel: (channelId) => set({ activeChannelId: channelId }),
-  addChannel: (channel) =>
-    set((state) => ({ channels: [...state.channels, channel] })),
+  addChannel: (channel) => set((state) => ({ channels: [...state.channels, channel] })),
   removeChannel: (channelId) =>
     set((state) => ({
       channels: state.channels.filter((c) => c.id !== channelId),
-      activeChannelId:
-        state.activeChannelId === channelId ? 'general' : state.activeChannelId,
+      activeChannelId: state.activeChannelId === channelId ? 'general' : state.activeChannelId,
     })),
 
   messagesByChannel: {},
@@ -88,9 +86,7 @@ export const useChatStore = create<ChatState>((set) => ({
     set((state) => ({
       typingUsers: {
         ...state.typingUsers,
-        [channelId]: (state.typingUsers[channelId] || []).filter(
-          (id) => id !== userId
-        ),
+        [channelId]: (state.typingUsers[channelId] || []).filter((id) => id !== userId),
       },
     })),
 }));
