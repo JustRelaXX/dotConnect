@@ -1,7 +1,53 @@
-# Tauri + React + Typescript
+# dotConnect
 
-This template should help get you started developing with Tauri, React and Typescript in Vite.
+> Лёгкий десктопный мессенджер, вдохновлённый Discord — без лишнего, только общение.
 
-## Recommended IDE Setup
+<!-- TODO: добавь скриншот сюда -->
+<!-- ![dotConnect screenshot](./public/screenshot.png) -->
 
-- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+---
+
+## Установка программы
+
+### Просто установить последний релиз
+
+---
+
+
+## 🚀 Запуск и разработка
+
+### Требования
+
+- [Node.js](https://nodejs.org/) 18+
+- [Rust](https://www.rust-lang.org/tools/install) (последняя стабильная версия)
+- [Tauri CLI](https://tauri.app/start/prerequisites/)
+
+
+
+### Установка репозитория
+
+```bash
+git clone https://github.com/JustRelaXX/dotConnect.git
+cd dotConnect
+npm install
+```
+
+### Режим разработки
+
+```bash
+npm run tauri dev
+```
+
+### Сборка для продакшна
+
+```bash
+npm run tauri build
+```
+
+Готовый инсталлятор появится в `src-tauri/target/release/bundle/`.
+
+---
+
+## 📄 Лицензия
+
+MIT — делай что хочешь, но не забудь упомянуть автора.
